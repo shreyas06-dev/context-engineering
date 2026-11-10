@@ -1,0 +1,7 @@
+venv/
+__pycache__/
+*.pyc
+patterns.db
+.env
+.DS_Store
+alembic/versions/*.pyc

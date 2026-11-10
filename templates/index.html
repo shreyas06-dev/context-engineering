@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patterns — A field guide for AI-fluent leaders</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #13110e;
+            --bg-deep: #0c0a08;
+            --surface: #1c1915;
+            --surface-2: #24201a;
+            --surface-hi: #2e2920;
+            --text: #f0e8d8;
+            --text-2: #b0a898;
+            --text-3: #6e675b;
+            --rule: rgba(240,232,216,0.08);
+            --rule-2: rgba(240,232,216,0.16);
+            --rust: #e07a54;
+            --rust-deep: #f09470;
+            --rust-tint: rgba(224,122,84,0.09);
+            --rust-glow: rgba(224,122,84,0.18);
+            --pine: #7aab8f;
+            --pine-tint: rgba(122,171,143,0.10);
+            --gold: #c9a96e;
+            --serif: 'Fraunces', 'Times New Roman', serif;
+            --sans: 'Inter', system-ui, sans-serif;
+            --mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--sans);
+            font-size: 15px;
+            line-height: 1.55;
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        a { color: inherit; text-decoration: none; }
+        a:hover { color: var(--rust); }
+        button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+        .wrap { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+
+        /* ==================================================================
+           HEADER
+           ================================================================== */
+        header.site {
+            border-bottom: 1px solid var(--rule);
+            background: rgba(19,17,14,0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+        .site-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+            gap: 40px;
+        }
+        .brand {
+            font-family: var(--serif);
+            font-size: 21px;
+            font-weight: 500;
+            letter-spacing: -0.035em;
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+        .brand::after {
+            content: "®";
+            font-size: 9px;
+            font-family: var(--sans);
+            color: var(--rust);
+            font-weight: 500;
+            letter-spacing: 0;
+            transform: translateY(-5px);
+        }
+        .site-nav { display: flex; align-items: center; gap: 32px; margin-left: auto; }
+        .site-nav a {
+            font-size: 13px;
+            color: var(--text-2);
+            font-weight: 400;
+            transition: color .2s;
+        }
+        .site-nav a:hover { color: var(--rust); }
+        .site-auth { display: flex; align-items: center; gap: 18px; margin-left: 20px; }
+        .site-auth .login { font-size: 13px; color: var(--text-2); }
+        .site-auth .signup {
+            font-size: 13px;
+            color: var(--bg);
+            background: var(--text);
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-weight: 500;
+            transition: background .25s, transform .2s, color .25s;
+        }
+        .site-auth .signup:hover {
+            background: var(--rust);
+            color: var(--text);
+            transform: translateY(-1px);
+        }
+        .site-auth .logout { color: var(--rust); font-size: 13px; }
+        .auth-only { display: none; }
+        .public-only { display: flex; }
+
+        /* ==================================================================
+           HERO
+           ================================================================== */
+        .hero {
+            padding: 80px 0 90px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 600px 400px at 85% 20%, var(--rust-glow), transparent 70%),
+                radial-gradient(ellipse 500px 400px at 10% 80%, rgba(122,171,143,0.06), transparent 70%);
+            pointer-events: none;
+            opacity: 0.6;
+        }
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            align-items: center;
+            position: relative;
+        }
+        .hero-copy .eyebrow {
+            font-family: var(--mono);
+            font-size: 10.5px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--rust);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+        .hero-copy .eyebrow::before {
+            content: "";
+            width: 24px;
+            height: 1px;
+            background: var(--rust);
+        }
+        .hero-copy h1 {
+            font-family: var(--serif);
+            font-size: clamp(40px, 5vw, 64px);
+            font-weight: 300;
+            line-height: 1.02;
+            letter-spacing: -0.035em;
+            margin-bottom: 24px;
+            color: var(--text);
+        }
+        .hero-copy h1 em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--rust);
+        }
+        .hero-copy .lede {
+            font-size: 16.5px;
+            color: var(--text-2);
+            line-height: 1.65;
+            max-width: 440px;
+            margin-bottom: 36px;
+            font-weight: 300;
+        }
+        .hero-stats {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 36px;
+            padding-top: 28px;
+            border-top: 1px solid var(--rule);
+        }
+        .hero-stat .stat-value {
+            font-family: var(--serif);
+            font-size: 32px;
+            font-weight: 400;
+            letter-spacing: -0.03em;
+            color: var(--text);
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+        .hero-stat .stat-label {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--text-3);
+            font-weight: 500;
+        }
+        .hero-cta { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+        .cta-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 13px 24px;
+            background: var(--text);
+            color: var(--bg);
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 500;
+            transition: background .25s, transform .2s, gap .25s, color .25s;
+        }
+        .cta-primary::after { content: "→"; font-size: 14px; transition: transform .25s; }
+        .cta-primary:hover {
+            background: var(--rust);
+            color: var(--text);
+            transform: translateY(-1px);
+            gap: 14px;
+        }
+        .cta-ghost {
+            font-size: 13px;
+            color: var(--text-2);
+            border-bottom: 1px solid var(--rule-2);
+            padding-bottom: 2px;
+            transition: color .2s, border-color .2s;
+        }
+        .cta-ghost:hover { color: var(--rust); border-color: var(--rust); }
+
+        /* ==================================================================
+           HERO VISUAL — Card Deck
+           ================================================================== */
+        .hero-visual {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 560px;
+        }
+
+        /* ambient glow behind the deck */
+        .hero-visual::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 420px;
+            height: 420px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--rust-glow) 0%, transparent 65%);
+            filter: blur(48px);
+            opacity: 0.7;
+            z-index: 0;
+            pointer-events: none;
+            animation: glowPulse 6s ease-in-out infinite;
+        }
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.55; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.85; transform: translate(-50%, -50%) scale(1.08); }
+        }
+
+        .hero-cards {
+            position: relative;
+            width: 100%;
+            max-width: 380px;
+            height: 470px;
+            z-index: 1;
+            cursor: pointer;
+            margin-bottom: 32px;
+        }
+
+        .hero-card {
+            position: absolute;
+            inset: 0;
+            border-radius: 18px;
+            background: linear-gradient(180deg, #2c2620 0%, #1c1915 100%);
+            border: 1px solid rgba(240,232,216,0.10);
+            padding: 32px 30px 26px;
+            display: flex;
+            flex-direction: column;
+            box-shadow:
+                inset 0 1px 0 rgba(240,232,216,0.06),
+                0 40px 80px -32px rgba(0,0,0,0.75),
+                0 20px 40px -24px rgba(0,0,0,0.5);
+            transition:
+                transform 0.75s cubic-bezier(0.2,0.8,0.2,1),
+                opacity 0.55s ease,
+                filter 0.55s ease,
+                box-shadow 0.4s ease;
+            will-change: transform;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        /* top color rule per card */
+        .hero-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--rust);
+        }
+        .hero-card[data-accent="pine"]::before { background: var(--pine); }
+        .hero-card[data-accent="gold"]::before { background: var(--gold); }
+
+        /* corner tick mark in bottom-right (subtle) */
+        .hero-card::after {
+            content: "";
+            position: absolute;
+            bottom: 14px;
+            right: 14px;
+            width: 10px;
+            height: 10px;
+            border-right: 1px solid var(--rule-2);
+            border-bottom: 1px solid var(--rule-2);
+            opacity: 0.5;
+        }
+
+        /* card positions */
+        .hero-card[data-pos="0"] {
+            transform: rotate(-1.5deg) translateY(0) scale(1);
+            z-index: 3;
+            opacity: 1;
+            filter: blur(0);
+        }
+        .hero-card[data-pos="0"]:hover {
+            transform: rotate(0deg) translateY(-6px) scale(1);
+            box-shadow:
+                inset 0 1px 0 rgba(240,232,216,0.08),
+                0 50px 100px -32px rgba(0,0,0,0.85),
+                0 0 60px -10px var(--rust-glow);
+        }
+        .hero-card[data-pos="1"] {
+            transform: rotate(2.5deg) translateY(22px) scale(0.945);
+            z-index: 2;
+            opacity: 0.55;
+            filter: blur(0.4px);
+        }
+        .hero-card[data-pos="2"] {
+            transform: rotate(-3.5deg) translateY(44px) scale(0.89);
+            z-index: 1;
+            opacity: 0.28;
+            filter: blur(0.9px);
+        }
+
+        /* card anatomy */
+        .hc-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 24px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid var(--rule);
+        }
+        .hc-index {
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 15px;
+            color: var(--rust);
+            letter-spacing: -0.01em;
+        }
+        .hero-card[data-accent="pine"] .hc-index { color: var(--pine); }
+        .hero-card[data-accent="gold"] .hc-index { color: var(--gold); }
+
+        .hc-fig {
+            font-family: var(--mono);
+            font-size: 9px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--text-3);
+            font-weight: 500;
+        }
+
+        .hc-title {
+            font-family: var(--serif);
+            font-size: 29px;
+            font-weight: 400;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            color: var(--text);
+            margin-bottom: 26px;
+        }
+
+        .hc-field { margin-bottom: 18px; }
+        .hc-field:last-of-type { margin-bottom: 0; }
+        .hc-label {
+            font-family: var(--mono);
+            font-size: 9.5px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--rust);
+            font-weight: 600;
+            margin-bottom: 7px;
+            display: block;
+        }
+        .hc-field.technique .hc-label { color: var(--pine); }
+        .hc-text {
+            font-size: 13.5px;
+            line-height: 1.55;
+            color: var(--text-2);
+            font-weight: 300;
+        }
+
+        .hc-foot {
+            margin-top: auto;
+            padding-top: 18px;
+            border-top: 1px solid var(--rule);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .hc-tag {
+            font-family: var(--mono);
+            font-size: 9px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--rust);
+            background: var(--rust-tint);
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-weight: 600;
+        }
+        .hero-card[data-accent="pine"] .hc-tag {
+            color: var(--pine);
+            background: var(--pine-tint);
+        }
+        .hero-card[data-accent="gold"] .hc-tag {
+            color: var(--gold);
+            background: rgba(201,169,110,0.10);
+        }
+        .hc-read {
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 13px;
+            color: var(--text-3);
+        }
+
+        /* dots indicator */
+        .hero-dots {
+            display: flex;
+            gap: 8px;
+            z-index: 4;
+            position: relative;
+        }
+        .hero-dots span {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--rule-2);
+            transition: background 0.3s, transform 0.3s;
+            cursor: pointer;
+            display: block;
+        }
+        .hero-dots span.active {
+            background: var(--rust);
+            transform: scale(1.4);
+        }
+
+        /* ==================================================================
+           START HERE
+           ================================================================== */
+        .start-here {
+            padding: 72px 0 80px;
+            border-top: 1px solid var(--rule);
+        }
+        .section-eyebrow {
+            font-family: var(--mono);
+            font-size: 10.5px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--text-3);
+            font-weight: 500;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .section-eyebrow::before {
+            content: "";
+            width: 20px;
+            height: 1px;
+            background: var(--text-3);
+        }
+        .section-heading {
+            font-family: var(--serif);
+            font-size: 32px;
+            font-weight: 300;
+            letter-spacing: -0.025em;
+            color: var(--text);
+            margin-bottom: 12px;
+        }
+        .section-sub {
+            font-size: 15px;
+            color: var(--text-2);
+            font-weight: 300;
+            max-width: 520px;
+            line-height: 1.6;
+            margin-bottom: 48px;
+        }
+
+        .path-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .path-card {
+            position: relative;
+            background: var(--surface);
+            border: 1px solid var(--rule);
+            border-radius: 12px;
+            padding: 32px 28px 28px;
+            transition: transform .3s, border-color .3s, box-shadow .3s;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        .path-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--rust);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .4s cubic-bezier(0.2,0.8,0.2,1);
+        }
+        .path-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--rule-2);
+            box-shadow: 0 20px 40px -24px rgba(0,0,0,0.6);
+        }
+        .path-card:hover::before { transform: scaleX(1); }
+        .path-card[data-variant="pine"]::before { background: var(--pine); }
+        .path-card[data-variant="gold"]::before { background: var(--gold); }
+
+        .path-num {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--text-3);
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+        .path-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--rust-tint);
+            color: var(--rust);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--serif);
+            font-size: 18px;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        .path-card[data-variant="pine"] .path-icon {
+            background: var(--pine-tint);
+            color: var(--pine);
+        }
+        .path-card[data-variant="gold"] .path-icon {
+            background: rgba(201,169,110,0.10);
+            color: var(--gold);
+        }
+        .path-title {
+            font-family: var(--serif);
+            font-size: 21px;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            color: var(--text);
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+        .path-desc {
+            font-size: 13.5px;
+            color: var(--text-2);
+            line-height: 1.55;
+            font-weight: 300;
+            margin-bottom: 24px;
+        }
+        .path-link {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--rust);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: gap .3s;
+        }
+        .path-card[data-variant="pine"] .path-link { color: var(--pine); }
+        .path-card[data-variant="gold"] .path-link { color: var(--gold); }
+        .path-link::after { content: "→"; }
+        .path-card:hover .path-link { gap: 12px; }
+
+        /* ==================================================================
+           PATTERNS
+           ================================================================== */
+        .patterns-section {
+            padding: 72px 0 100px;
+            border-top: 1px solid var(--rule);
+        }
+        .patterns-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+        .patterns-header .header-left .section-heading { margin-bottom: 6px; }
+        .patterns-header .header-left .section-sub { margin-bottom: 0; }
+
+        .pattern-filters { display: flex; gap: 8px; flex-wrap: wrap; }
+        .filter-chip {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-3);
+            padding: 7px 14px;
+            border-radius: 999px;
+            border: 1px solid var(--rule);
+            background: var(--surface);
+            font-weight: 500;
+            transition: all .25s;
+            cursor: pointer;
+        }
+        .filter-chip:hover { color: var(--text-2); border-color: var(--rule-2); }
+        .filter-chip.active {
+            color: var(--rust);
+            border-color: var(--rust);
+            background: var(--rust-tint);
+        }
+
+        .pattern-list { display: flex; flex-direction: column; gap: 16px; }
+
+        .pattern-row {
+            position: relative;
+            background: var(--surface);
+            border: 1px solid var(--rule);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: border-color .3s, box-shadow .3s;
+        }
+        .pattern-row::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; bottom: 0;
+            width: 3px;
+            background: var(--rust);
+            transition: width .3s;
+        }
+        .pattern-row[data-accent="pine"]::before { background: var(--pine); }
+        .pattern-row[data-accent="gold"]::before { background: var(--gold); }
+        .pattern-row:hover { border-color: var(--rule-2); }
+        .pattern-row:hover::before { width: 4px; }
+        .pattern-row.open {
+            border-color: var(--rule-2);
+            box-shadow: 0 20px 50px -30px rgba(0,0,0,0.6);
+        }
+        .pattern-row.open::before { width: 4px; }
+
+        .pattern-summary {
+            display: grid;
+            grid-template-columns: 48px 1fr auto;
+            gap: 20px;
+            align-items: center;
+            padding: 22px 28px 22px 32px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .pattern-index {
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 22px;
+            font-weight: 400;
+            color: var(--rust);
+            line-height: 1;
+            letter-spacing: -0.02em;
+        }
+        .pattern-row[data-accent="pine"] .pattern-index { color: var(--pine); }
+        .pattern-row[data-accent="gold"] .pattern-index { color: var(--gold); }
+
+        .pattern-headline { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+        .pattern-name {
+            font-family: var(--serif);
+            font-size: 19px;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            color: var(--text);
+            line-height: 1.2;
+        }
+        .pattern-outcome {
+            font-size: 13px;
+            color: var(--text-2);
+            font-weight: 300;
+            line-height: 1.4;
+        }
+        .pattern-outcome strong { color: var(--text); font-weight: 500; }
+
+        .pattern-meta { display: flex; align-items: center; gap: 14px; }
+        .pattern-tag {
+            font-family: var(--mono);
+            font-size: 9px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--pine);
+            background: var(--pine-tint);
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        .pattern-row[data-accent="rust"] .pattern-tag {
+            color: var(--rust-deep);
+            background: var(--rust-tint);
+        }
+        .pattern-row[data-accent="gold"] .pattern-tag {
+            color: var(--gold);
+            background: rgba(201,169,110,0.10);
+        }
+        .pattern-chevron {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 1px solid var(--rule);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-3);
+            font-size: 12px;
+            transition: transform .4s cubic-bezier(0.2,0.8,0.2,1), border-color .3s, color .3s;
+            flex-shrink: 0;
+        }
+        .pattern-row.open .pattern-chevron {
+            transform: rotate(180deg);
+            border-color: var(--rust);
+            color: var(--rust);
+        }
+
+        .pattern-detail {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .5s cubic-bezier(0.2,0.8,0.2,1);
+        }
+        .pattern-row.open .pattern-detail { max-height: 800px; }
+        .pattern-detail-inner {
+            padding: 0 28px 28px 32px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 24px;
+        }
+        .detail-col { display: flex; flex-direction: column; gap: 8px; }
+        .detail-label {
+            font-family: var(--mono);
+            font-size: 9.5px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--rust);
+            font-weight: 600;
+        }
+        .detail-col.technique .detail-label { color: var(--pine); }
+        .detail-col.example .detail-label { color: var(--gold); }
+        .detail-text {
+            font-size: 13.5px;
+            color: var(--text-2);
+            line-height: 1.6;
+            font-weight: 300;
+        }
+        .detail-example {
+            position: relative;
+            background: var(--rust-tint);
+            border-left: 2px solid var(--rust);
+            padding: 14px 16px;
+            border-radius: 0 6px 6px 0;
+            font-family: var(--mono);
+            font-size: 11.5px;
+            line-height: 1.6;
+            color: var(--rust-deep);
+            margin-top: 2px;
+        }
+        .detail-example .copy-btn {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            font-family: var(--mono);
+            font-size: 9px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--rust);
+            padding: 3px 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(224,122,84,0.25);
+            background: rgba(19,17,14,0.5);
+            transition: background .2s, border-color .2s, color .2s;
+            font-weight: 500;
+        }
+        .detail-example .copy-btn:hover {
+            background: rgba(224,122,84,0.15);
+            border-color: var(--rust);
+        }
+        .detail-example .copy-btn.copied {
+            background: var(--pine);
+            border-color: var(--pine);
+            color: var(--bg);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 72px 40px;
+            border: 1px dashed var(--rule-2);
+            border-radius: 12px;
+            background: var(--surface);
+        }
+        .empty-state .empty-mark {
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 36px;
+            color: var(--rust);
+            opacity: 0.4;
+            margin-bottom: 16px;
+            line-height: 1;
+        }
+        .empty-state h3 {
+            font-family: var(--serif);
+            font-size: 20px;
+            font-weight: 400;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+        .empty-state p { color: var(--text-3); font-size: 14px; }
+
+        /* ==================================================================
+           CONTEXT ENGINEERING
+           ================================================================== */
+        .ctx-section {
+            padding: 72px 0 100px;
+            border-top: 1px solid var(--rule);
+        }
+        .ctx-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 56px;
+            align-items: start;
+        }
+        .ctx-copy .section-heading { margin-bottom: 16px; }
+        .ctx-copy .section-sub { margin-bottom: 32px; }
+        .ctx-definition {
+            background: var(--surface);
+            border: 1px solid var(--rule);
+            border-radius: 12px;
+            padding: 24px 26px;
+            margin-bottom: 28px;
+        }
+        .ctx-definition .def-label {
+            font-family: var(--mono);
+            font-size: 9.5px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--gold);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .ctx-definition .def-text {
+            font-family: var(--serif);
+            font-size: 17px;
+            font-style: italic;
+            font-weight: 300;
+            line-height: 1.5;
+            color: var(--text);
+            letter-spacing: -0.01em;
+        }
+        .ctx-principles { display: flex; flex-direction: column; gap: 18px; }
+        .ctx-principle {
+            display: grid;
+            grid-template-columns: 32px 1fr;
+            gap: 16px;
+            align-items: start;
+        }
+        .ctx-principle .principle-num {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--text-3);
+            font-weight: 500;
+            padding-top: 2px;
+            text-align: center;
+        }
+        .ctx-principle .principle-title {
+            font-family: var(--serif);
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 4px;
+            letter-spacing: -0.01em;
+        }
+        .ctx-principle .principle-desc {
+            font-size: 13.5px;
+            color: var(--text-2);
+            font-weight: 300;
+            line-height: 1.55;
+        }
+
+        /* ==================================================================
+           FOOTER
+           ================================================================== */
+        footer.site {
+            border-top: 1px solid var(--rule);
+            padding: 56px 0 36px;
+            background: var(--bg-deep);
+        }
+        .colophon {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 48px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid var(--rule);
+        }
+        .colophon-brand h3 {
+            font-family: var(--serif);
+            font-size: 26px;
+            font-weight: 400;
+            letter-spacing: -0.03em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+            color: var(--text);
+        }
+        .colophon-brand h3 sup {
+            color: var(--rust);
+            font-family: var(--sans);
+            font-size: 10px;
+            font-weight: 500;
+        }
+        .colophon-brand p {
+            font-size: 13px;
+            color: var(--text-2);
+            font-weight: 300;
+            max-width: 320px;
+            line-height: 1.6;
+        }
+        .colophon-col h4 {
+            font-family: var(--mono);
+            font-size: 9.5px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--text-3);
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+        .colophon-col ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+        .colophon-col a { font-size: 13px; color: var(--text-2); font-weight: 400; }
+        .colophon-col a:hover { color: var(--rust); }
+        .footer-base {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 24px;
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-3);
+            font-weight: 400;
+        }
+        .footer-base .vol {
+            font-family: var(--serif);
+            font-style: italic;
+            text-transform: none;
+            letter-spacing: 0;
+            font-size: 13px;
+            color: var(--rust);
+        }
+
+        /* ==================================================================
+           RESPONSIVE
+           ================================================================== */
+        @media (max-width: 1000px) {
+            .hero-grid { grid-template-columns: 1fr; gap: 48px; }
+            .hero-visual { order: -1; min-height: 520px; }
+            .path-grid { grid-template-columns: 1fr; }
+            .ctx-grid { grid-template-columns: 1fr; gap: 40px; }
+            .pattern-detail-inner { grid-template-columns: 1fr; gap: 20px; }
+            .colophon { grid-template-columns: 1fr 1fr; gap: 32px; }
+        }
+        @media (max-width: 720px) {
+            .wrap { padding: 0 24px; }
+            .site-nav { display: none; }
+            header.site { position: static; }
+            .site-inner { height: 56px; }
+            .hero { padding: 48px 0 56px; }
+            .hero-copy h1 { font-size: 34px; }
+            .hero-copy .lede { font-size: 15px; }
+            .hero-stats { gap: 24px; }
+            .hero-stat .stat-value { font-size: 26px; }
+            .hero-visual { min-height: 480px; }
+            .hero-cards { max-width: 320px; height: 400px; }
+            .hero-card { padding: 26px 24px 22px; border-radius: 14px; }
+            .hc-title { font-size: 24px; margin-bottom: 20px; }
+            .hc-text { font-size: 12.5px; }
+            .hc-top { margin-bottom: 18px; padding-bottom: 14px; }
+            .section-heading { font-size: 26px; }
+            .pattern-summary {
+                grid-template-columns: 36px 1fr auto;
+                gap: 14px;
+                padding: 18px 20px 18px 24px;
+            }
+            .pattern-name { font-size: 17px; }
+            .pattern-outcome { font-size: 12px; }
+            .pattern-detail-inner { padding: 0 20px 22px 24px; }
+            .colophon { grid-template-columns: 1fr; gap: 28px; padding-bottom: 28px; }
+            .footer-base { flex-direction: column; gap: 10px; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================ HEADER ============================ -->
+    <header class="site">
+        <div class="wrap site-inner">
+            <a href="/" class="brand">Patterns</a>
+            <nav class="site-nav">
+                <a href="#start">Start here</a>
+                <a href="#patterns">Patterns</a>
+                <a href="#context">Context engineering</a>
+            </nav>
+            <div class="site-auth">
+                <div class="public-only" id="publicNav">
+                    <a href="/login" class="login">Log in</a>
+                    <a href="/signup" class="signup">Sign up</a>
+                </div>
+                <div class="auth-only" id="authNav" style="gap: 18px; align-items: center;">
+                    <a href="#" onclick="alert('Dashboard coming next!')">Dashboard</a>
+                    <a href="#" onclick="logout()" class="logout">Log out</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================ HERO ============================ -->
+    <section class="hero">
+        <div class="wrap hero-grid">
+            <div class="hero-copy">
+                <div class="eyebrow">For leaders navigating enterprise AI</div>
+                <h1>
+                    Learn what actually<br>
+                    works with <em>your prompts.</em>
+                </h1>
+                <p class="lede">
+                    A field guide to prompt engineering and context engineering — written for decision-makers, not engineers. Learn what works, why it works, and how to evaluate it.
+                </p>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="stat-value">7</div>
+                        <div class="stat-label">Core patterns</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Learning paths</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="stat-value">5 min</div>
+                        <div class="stat-label">To get started</div>
+                    </div>
+                </div>
+                <div class="hero-cta">
+                    <a href="#start" class="cta-primary">Start here</a>
+                    <a href="#patterns" class="cta-ghost">Browse all patterns</a>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <div class="hero-cards" id="heroCards" aria-label="Sample pattern cards. Click to shuffle.">
+                    <article class="hero-card" data-accent="rust">
+                        <div class="hc-top">
+                            <span class="hc-index">01</span>
+                            <span class="hc-fig">Fig. 01 / 07</span>
+                        </div>
+                        <h3 class="hc-title">Chain-of-Thought</h3>
+                        <div class="hc-field">
+                            <span class="hc-label">Outcome</span>
+                            <p class="hc-text">Complex reasoning tasks stop producing shallow answers.</p>
+                        </div>
+                        <div class="hc-field technique">
+                            <span class="hc-label">Technique</span>
+                            <p class="hc-text">Ask the model to work through its reasoning step by step before answering.</p>
+                        </div>
+                        <div class="hc-foot">
+                            <span class="hc-tag">Reasoning</span>
+                            <span class="hc-read">read →</span>
+                        </div>
+                    </article>
+
+                    <article class="hero-card" data-accent="pine">
+                        <div class="hc-top">
+                            <span class="hc-index">02</span>
+                            <span class="hc-fig">Fig. 02 / 07</span>
+                        </div>
+                        <h3 class="hc-title">Few-Shot Examples</h3>
+                        <div class="hc-field">
+                            <span class="hc-label">Outcome</span>
+                            <p class="hc-text">The model follows your format instead of guessing at it.</p>
+                        </div>
+                        <div class="hc-field technique">
+                            <span class="hc-label">Technique</span>
+                            <p class="hc-text">Show two or three examples of the exact input and output pattern you want.</p>
+                        </div>
+                        <div class="hc-foot">
+                            <span class="hc-tag">Grounding</span>
+                            <span class="hc-read">read →</span>
+                        </div>
+                    </article>
+
+                    <article class="hero-card" data-accent="gold">
+                        <div class="hc-top">
+                            <span class="hc-index">03</span>
+                            <span class="hc-fig">Fig. 03 / 07</span>
+                        </div>
+                        <h3 class="hc-title">Role Priming</h3>
+                        <div class="hc-field">
+                            <span class="hc-label">Outcome</span>
+                            <p class="hc-text">Answers arrive in the right voice, domain, and level of expertise.</p>
+                        </div>
+                        <div class="hc-field technique">
+                            <span class="hc-label">Technique</span>
+                            <p class="hc-text">Assign a specific role: "You are a senior risk analyst at a tier-one bank…"</p>
+                        </div>
+                        <div class="hc-foot">
+                            <span class="hc-tag">Persona</span>
+                            <span class="hc-read">read →</span>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="hero-dots" id="heroDots" aria-hidden="true">
+                    <span class="active"></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================ START HERE ============================ -->
+    <section class="start-here" id="start">
+        <div class="wrap">
+            <div class="section-eyebrow">Guided entry</div>
+            <h2 class="section-heading">Where would you like to start?</h2>
+            <p class="section-sub">Three paths based on your role and what you need right now. Each one takes about five minutes.</p>
+
+            <div class="path-grid">
+                <div class="path-card" data-variant="rust" onclick="document.getElementById('patterns').scrollIntoView({behavior:'smooth'})">
+                    <div class="path-num">Path 01</div>
+                    <div class="path-icon">N</div>
+                    <h3 class="path-title">I'm new to prompting</h3>
+                    <p class="path-desc">Start with the fundamentals. Learn the six patterns that cover 80% of everyday AI interactions.</p>
+                    <span class="path-link">Start with fundamentals</span>
+                </div>
+
+                <div class="path-card" data-variant="pine" onclick="document.getElementById('context').scrollIntoView({behavior:'smooth'})">
+                    <div class="path-num">Path 02</div>
+                    <div class="path-icon">C</div>
+                    <h3 class="path-title">I'm new to context engineering</h3>
+                    <p class="path-desc">Understand why prompt engineering alone isn't enough for enterprise AI — and what replaces it.</p>
+                    <span class="path-link">Learn the framework</span>
+                </div>
+
+                <div class="path-card" data-variant="gold" onclick="document.getElementById('patterns').scrollIntoView({behavior:'smooth'})">
+                    <div class="path-num">Path 03</div>
+                    <div class="path-icon">R</div>
+                    <h3 class="path-title">I need a quick reference</h3>
+                    <p class="path-desc">Skip the theory. Jump straight to the patterns and examples you can apply today.</p>
+                    <span class="path-link">Browse the library</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================ PATTERNS ============================ -->
+    <section class="patterns-section" id="patterns">
+        <div class="wrap">
+            <div class="patterns-header">
+                <div class="header-left">
+                    <div class="section-eyebrow">The library</div>
+                    <h2 class="section-heading">Patterns</h2>
+                    <p class="section-sub">Each pattern solves a specific problem. Read the outcome first — if it matches your situation, expand for the technique and example.</p>
+                </div>
+                <div class="pattern-filters">
+                    <button class="filter-chip active">All</button>
+                    <button class="filter-chip">Reasoning</button>
+                    <button class="filter-chip">Grounding</button>
+                    <button class="filter-chip">Persona</button>
+                </div>
+            </div>
+
+            <div class="pattern-list">
+                {% for pattern in patterns %}
+                <article class="pattern-row" data-accent="{% if loop.index % 3 == 1 %}rust{% elif loop.index % 3 == 2 %}pine{% else %}gold{% endif %}" id="pattern-{{ loop.index }}">
+                    <div class="pattern-summary" onclick="togglePattern(this)">
+                        <span class="pattern-index">{{ '%02d' % loop.index }}</span>
+                        <div class="pattern-headline">
+                            <h3 class="pattern-name">{{ pattern.title }}</h3>
+                            <p class="pattern-outcome"><strong>Outcome:</strong> {{ pattern.problem }}</p>
+                        </div>
+                        <div class="pattern-meta">
+                            <span class="pattern-tag">Pattern</span>
+                            <span class="pattern-chevron">▾</span>
+                        </div>
+                    </div>
+
+                    <div class="pattern-detail">
+                        <div class="pattern-detail-inner">
+                            <div class="detail-col">
+                                <span class="detail-label">Problem</span>
+                                <p class="detail-text">{{ pattern.problem }}</p>
+                            </div>
+                            <div class="detail-col technique">
+                                <span class="detail-label">Technique</span>
+                                <p class="detail-text">{{ pattern.technique }}</p>
+                            </div>
+                            {% if pattern.example %}
+                            <div class="detail-col example">
+                                <span class="detail-label">Example</span>
+                                <div class="detail-example">
+                                    {{ pattern.example }}
+                                    <button class="copy-btn" onclick="copyExample(this, event)">Copy</button>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </article>
+                {% else %}
+                <div class="empty-state">
+                    <div class="empty-mark">∅</div>
+                    <h3>The library is empty.</h3>
+                    <p>Log in to add the first pattern.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================ CONTEXT ENGINEERING ============================ -->
+    <section class="ctx-section" id="context">
+        <div class="wrap">
+            <div class="ctx-grid">
+                <div class="ctx-copy">
+                    <div class="section-eyebrow">The bigger picture</div>
+                    <h2 class="section-heading">Context engineering<br>is the enterprise discipline.</h2>
+                    <p class="section-sub">Prompt engineering is how you phrase a single request. Context engineering is how you design the entire information environment that AI operates within.</p>
+
+                    <div class="ctx-definition">
+                        <div class="def-label">Gartner definition</div>
+                        <p class="def-text">"Designing and structuring the relevant data, workflows, and environment so AI systems can understand intent, make better decisions, and deliver contextual, enterprise-aligned outcomes — without relying on manual prompts."</p>
+                    </div>
+                </div>
+
+                <div class="ctx-principles">
+                    <div class="section-eyebrow" style="margin-bottom: 24px;">The four pillars</div>
+
+                    <div class="ctx-principle">
+                        <span class="principle-num">01</span>
+                        <div>
+                            <div class="principle-title">Data curation</div>
+                            <p class="principle-desc">What information does the model receive? Where does it come from? How fresh is it?</p>
+                        </div>
+                    </div>
+
+                    <div class="ctx-principle">
+                        <span class="principle-num">02</span>
+                        <div>
+                            <div class="principle-title">Workflow integration</div>
+                            <p class="principle-desc">Where does AI sit in your processes? What decisions does it inform? What human oversight remains?</p>
+                        </div>
+                    </div>
+
+                    <div class="ctx-principle">
+                        <span class="principle-num">03</span>
+                        <div>
+                            <div class="principle-title">Environment design</div>
+                            <p class="principle-desc">What guardrails, permissions, and constraints shape what the model can and cannot do?</p>
+                        </div>
+                    </div>
+
+                    <div class="ctx-principle">
+                        <span class="principle-num">04</span>
+                        <div>
+                            <div class="principle-title">Governance & evolution</div>
+                            <p class="principle-desc">How does the system stay accurate over time? Who owns updates? How is compliance monitored?</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================ FOOTER ============================ -->
+    <footer class="site">
+        <div class="wrap">
+            <div class="colophon">
+                <div class="colophon-brand">
+                    <h3>Patterns <sup>®</sup></h3>
+                    <p>A field guide for leaders navigating enterprise AI. Written for decision-makers, not engineers.</p>
+                </div>
+                <div class="colophon-col">
+                    <h4>Library</h4>
+                    <ul>
+                        <li><a href="#patterns">All patterns</a></li>
+                        <li><a href="#patterns">Reasoning</a></li>
+                        <li><a href="#patterns">Grounding</a></li>
+                        <li><a href="#patterns">Persona</a></li>
+                    </ul>
+                </div>
+                <div class="colophon-col">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#context">Context engineering</a></li>
+                        <li><a href="#start">Start here</a></li>
+                        <li><a href="#">Glossary</a></li>
+                    </ul>
+                </div>
+                <div class="colophon-col">
+                    <h4>Elsewhere</h4>
+                    <ul>
+                        <li><a href="#">GitHub</a></li>
+                        <li><a href="#">Newsletter</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-base">
+                <span>© 2025 Patterns — A field guide for AI-fluent leaders</span>
+                <span class="vol">Vol. 01</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ---------- Auth ----------
+        const token = localStorage.getItem('token');
+        if (token) {
+            document.getElementById('authNav').style.display = 'flex';
+            document.getElementById('publicNav').style.display = 'none';
+        } else {
+            document.getElementById('publicNav').style.display = 'flex';
+            document.getElementById('authNav').style.display = 'none';
+        }
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.reload();
+        }
+
+        // ---------- Hero card deck ----------
+        (function() {
+            const deck = document.getElementById('heroCards');
+            const dots = document.querySelectorAll('#heroDots span');
+            if (!deck) return;
+            const cards = Array.from(deck.querySelectorAll('.hero-card'));
+            const N = cards.length;
+            let front = 0;
+            let paused = false;
+
+            function render() {
+                cards.forEach((card, i) => {
+                    const pos = ((i - front) % N + N) % N;
+                    card.dataset.pos = pos;
+                });
+                dots.forEach((d, i) => d.classList.toggle('active', i === front));
+            }
+
+            function advance() {
+                front = (front + 1) % N;
+                render();
+            }
+
+            // Auto-rotate every 5s, paused on hover
+            let timer = setInterval(() => { if (!paused) advance(); }, 5000);
+            deck.addEventListener('mouseenter', () => paused = true);
+            deck.addEventListener('mouseleave', () => paused = false);
+
+            // Click the deck to advance
+            deck.addEventListener('click', advance);
+
+            // Click a dot to jump
+            dots.forEach((dot, i) => {
+                dot.style.pointerEvents = 'auto';
+                dot.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    front = i;
+                    render();
+                });
+            });
+
+            render();
+        })();
+
+        // ---------- Progressive disclosure ----------
+        function togglePattern(summaryEl) {
+            const row = summaryEl.closest('.pattern-row');
+            const wasOpen = row.classList.contains('open');
+            document.querySelectorAll('.pattern-row.open').forEach(r => {
+                if (r !== row) r.classList.remove('open');
+            });
+            row.classList.toggle('open', !wasOpen);
+        }
+
+        // ---------- Filter chips ----------
+        document.querySelectorAll('.filter-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+            });
+        });
+
+        // ---------- Copy example ----------
+        function copyExample(btn, event) {
+            event.stopPropagation();
+            const block = btn.closest('.detail-example');
+            const clone = block.cloneNode(true);
+            const cloneBtn = clone.querySelector('.copy-btn');
+            if (cloneBtn) cloneBtn.remove();
+            const text = clone.innerText.trim();
+
+            navigator.clipboard.writeText(text).then(() => {
+                btn.textContent = 'Copied';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = 'Copy';
+                    btn.classList.remove('copied');
+                }, 1400);
+            }).catch(() => {
+                btn.textContent = 'Failed';
+                setTimeout(() => btn.textContent = 'Copy', 1400);
+            });
+        }
+    </script>
+</body>
+</html>
