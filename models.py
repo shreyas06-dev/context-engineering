@@ -13,26 +13,24 @@ favorites = Table(
 
 class User(Base):
     __tablename__ = "users"
-
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
     is_admin = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.utcnow)
-
-    # A user can have many favorite patterns
     favorites = relationship("Pattern", secondary=favorites, back_populates="favorited_by")
 
 class Pattern(Base):
     __tablename__ = "patterns"
-
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True, nullable=False)
-    problem = Column(Text, nullable=False)
-    technique = Column(Text, nullable=False)
-    example = Column(Text, nullable=True)
+    
+    # The Prompt Pyramid Structure
+    base_persona = Column(Text, nullable=False)       # Layer 1: Who is the AI? Rules?
+    context_examples = Column(Text, nullable=False)   # Layer 2: Context & Few-shot examples
+    task_instruction = Column(Text, nullable=False)   # Layer 3: The actual prompt/task
+    
     tradeoffs = Column(Text, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     
-    # A pattern can be favorited by many users
     favorited_by = relationship("User", secondary=favorites, back_populates="favorites")

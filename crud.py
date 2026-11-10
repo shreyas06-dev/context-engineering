@@ -10,9 +10,9 @@ def create_pattern(db: Session, pattern: schemas.PatternCreate):
     # Create: Turn the Pydantic schema into a SQLAlchemy model and save it
     db_pattern = models.Pattern(
         title=pattern.title,
-        problem=pattern.problem,
-        technique=pattern.technique,
-        example=pattern.example,
+        base_persona=pattern.base_persona,
+        context_examples=pattern.context_examples,
+        task_instruction=pattern.task_instruction,
         tradeoffs=pattern.tradeoffs
     )
     db.add(db_pattern)

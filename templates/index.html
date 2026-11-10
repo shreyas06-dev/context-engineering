@@ -1213,7 +1213,7 @@
                         <span class="pattern-index">{{ '%02d' % loop.index }}</span>
                         <div class="pattern-headline">
                             <h3 class="pattern-name">{{ pattern.title }}</h3>
-                            <p class="pattern-outcome"><strong>Outcome:</strong> {{ pattern.problem }}</p>
+                            <p class="pattern-outcome"><strong>Task:</strong> {{ pattern.task_instruction }}</p>
                         </div>
                         <div class="pattern-meta">
                             <span class="pattern-tag">Pattern</span>
@@ -1223,21 +1223,24 @@
 
                     <div class="pattern-detail">
                         <div class="pattern-detail-inner">
-                            <div class="detail-col">
-                                <span class="detail-label">Problem</span>
-                                <p class="detail-text">{{ pattern.problem }}</p>
-                            </div>
-                            <div class="detail-col technique">
-                                <span class="detail-label">Technique</span>
-                                <p class="detail-text">{{ pattern.technique }}</p>
-                            </div>
-                            {% if pattern.example %}
-                            <div class="detail-col example">
-                                <span class="detail-label">Example</span>
-                                <div class="detail-example">
-                                    {{ pattern.example }}
-                                    <button class="copy-btn" onclick="copyExample(this, event)">Copy</button>
+                            <div class="detail-two-col">
+                                <div class="detail-block">
+                                    <span class="detail-label">1. Base / Persona</span>
+                                    <p class="detail-text">{{ pattern.base_persona }}</p>
                                 </div>
+                                <div class="detail-block technique">
+                                    <span class="detail-label">2. Context / Examples</span>
+                                    <p class="detail-text">{{ pattern.context_examples }}</p>
+                                </div>
+                            </div>
+                            <div class="detail-block" style="margin-bottom: 28px;">
+                                <span class="detail-label" style="color: var(--gold);">3. Task / Instruction</span>
+                                <p class="detail-text">{{ pattern.task_instruction }}</p>
+                            </div>
+                            {% if pattern.tradeoffs %}
+                            <div class="detail-example-label">Tradeoffs</div>
+                            <div class="detail-example" style="border-left-color: var(--rust); background: rgba(224,122,84,0.06); color: #e0b0a0;">
+                                {{ pattern.tradeoffs }}
                             </div>
                             {% endif %}
                         </div>

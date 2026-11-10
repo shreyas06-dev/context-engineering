@@ -2,22 +2,19 @@ from pydantic import BaseModel, EmailStr
 from typing import Optional
 from datetime import datetime
 
-# --- Pattern Schemas ---
 class PatternCreate(BaseModel):
     title: str
-    problem: str
-    technique: str
-    example: Optional[str] = None
+    base_persona: str
+    context_examples: str
+    task_instruction: str
     tradeoffs: Optional[str] = None
 
 class Pattern(PatternCreate):
     id: int
     created_at: datetime
-
     class Config:
         from_attributes = True
 
-# --- User Schemas ---
 class UserCreate(BaseModel):
     email: EmailStr
     password: str
@@ -31,6 +28,5 @@ class User(BaseModel):
     email: str
     is_admin: bool
     created_at: datetime
-
     class Config:
         from_attributes = True
